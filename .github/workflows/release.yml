@@ -48,8 +48,14 @@ jobs:
             exit 1
           fi
 
+      - name: Find packed plugin
+        id: findplugin
+        run: |
+          output="$(ls dist)"
+          echo "::set-output name=pluginname::$output"
+
       - name: Upload to Github release
         uses: softprops/action-gh-release@v1
         with:
-          files: dist/
+          files: dist/${{ steps.findplugin.outputs.pluginname }}
           tag_name: ${{ steps.release_info.outputs.tag_name }}
